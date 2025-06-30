@@ -1,9 +1,11 @@
 package DAO.impl;
 
 import DAO.AlumnoDAO;
+import DAO.DAOException;
 import model.Alumno;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,17 +25,28 @@ public class AlumnoDAOImpl implements AlumnoDAO {
     }
 
     @Override
-    public void insertar(Alumno a) {
+    public void insertar(Alumno a) throws DAOException{
         PreparedStatement statement = null;
 
         try {
+
             statement = conexion.prepareStatement(INSERT);
             statement.setLong(1, a.getId());
             statement.setString(2, a.getNombre());
             statement.setString(3, a.getApellido());
-            statement.setDate(4, a.getFechaNacimiento());
+            statement.setDate(4, new Date(a.getFechaNacimiento().getTime()));
+            statement.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error en el SQL ", ex);
         } finally {
-            statement.close();
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex){
+                    throw new DAOException("Error en el SQL", ex);
+                }
+            }
         }
     }
 
