@@ -6,6 +6,7 @@ import model.Asignatura;
 import java.util.List;
 
 public class AsignaturaDAOImpl implements AsignaturaDAO {
+
     @Override
     public void insertar(Asignatura a) {
 
