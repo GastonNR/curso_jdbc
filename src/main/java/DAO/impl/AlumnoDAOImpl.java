@@ -5,6 +5,8 @@ import DAO.DAOException;
 import model.Alumno;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +31,9 @@ public class AlumnoDAOImpl implements AlumnoDAO {
         try {
 
             statement = conexion.prepareStatement(INSERT);
-            statement.setString(2, a.getNombre());
-            statement.setString(3, a.getApellido());
-            statement.setDate(4, new Date(a.getFechaNacimiento().getTime()));
+            statement.setString(1, a.getNombre());
+            statement.setString(2, a.getApellido());
+            statement.setDate(3, java.sql.Date.valueOf(a.getFechaNacimiento()));
             if (statement.executeUpdate() == 0) throw new DAOException("Puede que esto no se haya guardado");
             rs = statement.getGeneratedKeys();
             if (rs.next()) {
@@ -73,7 +75,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 
         String nombre = rs.getString("nombre");
         String apellidos = rs.getString("apellidos");
-        Date fechaNac = rs.getDate("fecha_nac");
+        LocalDate fechaNac = rs.getDate("fecha_nac").toLocalDate();
         Alumno alumno = new Alumno(nombre, apellidos, fechaNac);
         return alumno;
     }
@@ -147,5 +149,14 @@ public class AlumnoDAOImpl implements AlumnoDAO {
             }
         }
         return alumno;
+    }
+    public static void main(String[] args) throws SQLException, DAOException {
+        DAOManagerImpl daoManager = new DAOManagerImpl("localhost", "estudiante", "1234", "cursoJDBC");
+        String nombre = "Nicolás";
+        String apellidos = "Ruiz Ahumada";
+        LocalDate fecha_nac = LocalDate.of(1987, 04, 20);
+
+        Alumno alumno = new Alumno(nombre, apellidos, fecha_nac);
+        daoManager.getAlumnoDAO().insertar(alumno);
     }
 }

@@ -1,15 +1,16 @@
 package model;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Alumno {
     private Long id = null;
     private String nombre;
     private String apellido;
-    private Date fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
-    public Alumno( String nombre, String apellido, Date fechaNacimiento) {
+    public Alumno( String nombre, String apellido, LocalDate fechaNacimiento) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
@@ -39,11 +40,11 @@ public class Alumno {
         this.apellido = apellido;
     }
 
-    public Date getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

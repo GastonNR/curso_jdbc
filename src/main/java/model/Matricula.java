@@ -3,40 +3,61 @@ package model;
 import java.util.Objects;
 
 public class Matricula {
-    private Long alumno;
-    private Long asignatura;
-    private int year;
+
+    public class IdMatricula{
+
+        private Long alumno;
+        private Long asignatura;
+        private int year;
+
+        public IdMatricula(Long alumno, Long asignatura, int year) {
+            this.alumno = alumno;
+            this.asignatura = asignatura;
+            this.year = year;
+        }
+
+        public Long getAlumno() {
+            return alumno;
+        }
+
+        public void setAlumno(Long alumno) {
+            this.alumno = alumno;
+        }
+
+        public Long getAsignatura() {
+            return asignatura;
+        }
+
+        public void setAsignatura(Long asignatura) {
+            this.asignatura = asignatura;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public void setYear(int year) {
+            this.year = year;
+        }
+    }
+
+    private IdMatricula id;
     private Integer nota = null;
 
-    public Matricula(Long alumno, Long asignatura, int year, Integer nota) {
-        this.alumno = alumno;
-        this.asignatura = asignatura;
-        this.year = year;
-        this.nota = nota;
+    public Matricula(IdMatricula id) {
+        this.id = id;
     }
 
-    public Long getAlumno() {
-        return alumno;
+    public Matricula(Long alumno, Long asignatura, int year){
+        this.id = new IdMatricula(alumno, asignatura, year);
     }
 
-    public void setAlumno(Long alumno) {
-        this.alumno = alumno;
+    public IdMatricula getId() {
+        return id;
     }
 
-    public Long getAsignatura() {
-        return asignatura;
-    }
-
-    public void setAsignatura(Long asignatura) {
-        this.asignatura = asignatura;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void setId(IdMatricula id) {
+        this.id = id;
     }
 
     public Integer getNota() {
@@ -50,9 +71,7 @@ public class Matricula {
     @Override
     public String toString() {
         return "Matricula{" +
-                "alumno=" + alumno +
-                ", asignatura=" + asignatura +
-                ", year=" + year +
+                "id=" + id +
                 ", nota=" + nota +
                 '}';
     }
@@ -60,11 +79,11 @@ public class Matricula {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Matricula matricula)) return false;
-        return year == matricula.year && Objects.equals(alumno, matricula.alumno) && Objects.equals(asignatura, matricula.asignatura) && Objects.equals(nota, matricula.nota);
+        return Objects.equals(id, matricula.id) && Objects.equals(nota, matricula.nota);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alumno, asignatura, year, nota);
+        return Objects.hash(id, nota);
     }
 }
