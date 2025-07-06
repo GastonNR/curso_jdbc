@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatriculaDAOImpl implements MatriculaDAO {
@@ -103,7 +104,7 @@ public class MatriculaDAOImpl implements MatriculaDAO {
     public List<Matricula> obtenerTodos() throws DAOException{
         PreparedStatement statement = null;
         ResultSet rs = null;
-        List<Matricula> matriculas = null;
+        List<Matricula> matriculas = new ArrayList<>();
 
         try {
             statement = connection.prepareStatement(GETALL);
