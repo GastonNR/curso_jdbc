@@ -29,8 +29,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
-
-            statement = conexion.prepareStatement(INSERT);
+            statement = conexion.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, a.getNombre());
             statement.setString(2, a.getApellido());
             statement.setDate(3, java.sql.Date.valueOf(a.getFechaNacimiento()));
@@ -62,12 +61,33 @@ public class AlumnoDAOImpl implements AlumnoDAO {
     }
 
     @Override
-    public void modificar(Alumno a) {
+    public void modificar(Alumno a) throws DAOException{
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = conexion.prepareStatement(UPDATE);
+            statement.setString(1, a.getNombre());
+            statement.setString(2, a.getApellido());
+            statement.setDate(3, java.sql.Date.valueOf(a.getFechaNacimiento()));
+            statement.setLong(4, a.getId());
+            if (statement.executeUpdate() == 0) throw new DAOException("Error al actualizar los datos del alumno.");
 
+        } catch (SQLException ex) {
+            throw new DAOException("Error al actualizar los datos del alumno.");
+        }
     }
 
     @Override
-    public void eliminar(Alumno a) {
+    public void eliminar(Alumno a) throws DAOException{
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = conexion.prepareStatement(DELETE);
+            statement.setLong(1, a.getId());
+
+        } catch (SQLException e) {
+            throw new DAOException("Error al borrar los datos del alumno.");
+        }
 
     }
 
@@ -152,9 +172,9 @@ public class AlumnoDAOImpl implements AlumnoDAO {
     }
     public static void main(String[] args) throws SQLException, DAOException {
         DAOManagerImpl daoManager = new DAOManagerImpl("localhost", "estudiante", "1234", "cursoJDBC");
-        String nombre = "Nicolás";
-        String apellidos = "Ruiz Ahumada";
-        LocalDate fecha_nac = LocalDate.of(1987, 04, 20);
+        String nombre = "Marcos";
+        String apellidos = "Perez";
+        LocalDate fecha_nac = LocalDate.of(1988, 8, 20);
 
         Alumno alumno = new Alumno(nombre, apellidos, fecha_nac);
         daoManager.getAlumnoDAO().insertar(alumno);
