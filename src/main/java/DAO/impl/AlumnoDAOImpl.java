@@ -169,13 +169,5 @@ public class AlumnoDAOImpl implements AlumnoDAO {
         }
         return alumno;
     }
-    public static void main(String[] args) throws SQLException, DAOException {
-        DAOManagerImpl daoManager = new DAOManagerImpl("localhost", "estudiante", "1234", "cursoJDBC");
-        String nombre = "Marcos";
-        String apellidos = "Perez";
-        LocalDate fecha_nac = LocalDate.of(1988, 8, 20);
 
-        Alumno alumno = new Alumno(nombre, apellidos, fecha_nac);
-        daoManager.getAlumnoDAO().insertar(alumno);
-    }
 }

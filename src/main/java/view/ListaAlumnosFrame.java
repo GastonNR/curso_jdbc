@@ -9,7 +9,6 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -80,15 +79,10 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
         pack();
     }
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new ListaAlumnosFrame().setVisible(true));
-    }
-
-    // Variables declaration - do not modify
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
-    // End of variables declaration
+
 }

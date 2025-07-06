@@ -156,13 +156,4 @@ public class AsignaturaDAOImpl implements AsignaturaDAO {
 
     }
 
-    public static void main(String[] args) throws SQLException, DAOException{
-        DAOManagerImpl daoManager = new DAOManagerImpl("localhost", "estudiante", "1234", "cursoJDBC");
-        String nombre = "Programación orientada a objetos";
-        Long profesor = 1L;
-
-        Asignatura asignatura = new Asignatura(nombre, profesor);
-        daoManager.getAsignaturaDAO().insertar(asignatura);
-
-    }
 }
