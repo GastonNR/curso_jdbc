@@ -5,6 +5,9 @@ import DAO.MatriculaDAO;
 import model.Matricula;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class MatriculaDAOImpl implements MatriculaDAO {
@@ -12,6 +15,7 @@ public class MatriculaDAOImpl implements MatriculaDAO {
     final String INSERT = "INSERT INTO matriculas(alumno, asignatura, fecha, nota) VALUES(?, ?, ?, ?)";
     final String UPDATE = "UPDATE matriculas SET alumno = ?, asignatura = ?, fecha = ?, nota = ?";
     final String DELETE = "DELETE FROM matriculas WHERE alumno = ?";
+    final String GETALL =   "SELECT * FROM matriculas";
     final String GETALUMNO = "SELECT * FROM matricula WHERE alumno = ?";
     final String GETASIGNATURA = "SELECT * FROM matricula WHERE asignatura = ?";
     final String GETYEAR = "SELECT * FROM matricula WHERE fecha = ?";
@@ -23,34 +27,121 @@ public class MatriculaDAOImpl implements MatriculaDAO {
     }
 
     @Override
-    public void insertar(Matricula a) {
+    public void insertar(Matricula matricula) throws DAOException{
+        PreparedStatement statement = null;
 
+        try {
+            statement = connection.prepareStatement(INSERT);
+            statement.setLong(1, matricula.getId().getAlumno());
+            statement.setLong(2, matricula.getId().getAsignatura());
+            statement.setInt(3, matricula.getId().getYear());
+            statement.setInt(4, matricula.getNota());
+            if (statement.executeUpdate() == 0) throw new DAOException("Puede que la matricula no se haya registrado");
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al registrar la matricula");
+
+        } finally {
+            try {
+                if (statement != null) statement.close();
+
+            } catch (SQLException ex) {
+                throw new DAOException("Error al cerrar la consulta");
+
+            }
+        }
     }
 
     @Override
-    public void modificar(Matricula a) {
+    public void modificar(Matricula matricula) throws DAOException{
+        PreparedStatement statement = null;
 
+        try {
+            statement = connection.prepareStatement(UPDATE);
+            statement.setLong(1, matricula.getId().getAlumno());
+            statement.setLong(2, matricula.getId().getAsignatura());
+            statement.setInt(3, matricula.getId().getYear());
+            statement.setInt(4, matricula.getNota());
+            if (statement.executeUpdate() == 0) throw new DAOException("Puede que los datos no se hayan actualizado");
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al registrar los cambios");
+        } finally {
+            try {
+                if (statement != null) statement.close();
+
+            } catch (SQLException ex) {
+                throw new DAOException("Error al cerrar la consulta");
+
+            }
+        }
     }
 
     @Override
-    public void eliminar(Matricula a) {
+    public void eliminar(Matricula matricula) throws DAOException {
+        PreparedStatement statement = null;
 
+        try {
+            statement = connection.prepareStatement(DELETE);
+            statement.setLong(1, matricula.getId().getAlumno());
+            if (statement.executeUpdate() == 0) throw new DAOException("Puede que la matricula no se haya borrado");
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al borrar la matricula");
+        } finally {
+            try {
+                if (statement != null) statement.close();
+
+            } catch (SQLException ex) {
+                throw new DAOException("Error al cerrar la consulta");
+
+            }
+        }
     }
 
     @Override
-    public List<Matricula> obtenerTodos() {
-        return List.of();
+    public List<Matricula> obtenerTodos() throws DAOException{
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        List<Matricula> matriculas = null;
+
+        try {
+            statement = connection.prepareStatement(GETALL);
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Long id_alumno = rs.getLong("alumno");
+                Long id_asignatura = rs.getLong("asignatura");
+                Integer year = rs.getInt("year");
+                Integer nota = rs.getInt("nota");
+                Matricula matricula = new Matricula(id_alumno, id_asignatura, year);
+                matricula.setNota(nota);
+                matriculas.add(matricula);
+
+            }
+            return matriculas;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al obtener las matriculas");
+
+        }finally {
+            try {
+                if (rs != null) rs.close();
+                if (statement != null) statement.close();
+
+            } catch (SQLException ex) {
+                throw new DAOException("Error al cerrar la consulta");
+
+            }
+
+        }
+
     }
 
     @Override
     public Matricula obtener(Matricula.IdMatricula id) throws DAOException {
         return null;
     }
-
-    //@Override
-    //public Matricula obtener(Long id) {
-    //   return null;
-    //}
 
     @Override
     public List<Matricula> obtenerPorAlumno(long alumno) throws DAOException {
