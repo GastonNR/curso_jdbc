@@ -7,8 +7,7 @@ public class Asignatura {
     private String nombre;
     private Long idProfesor;
 
-    public Asignatura(Long id, String nombre, Long idProfesor) {
-        this.id = id;
+    public Asignatura(String nombre, Long idProfesor) {
         this.nombre = nombre;
         this.idProfesor = idProfesor;
     }
