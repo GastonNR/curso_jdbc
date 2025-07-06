@@ -16,7 +16,8 @@ public class MatriculaDAOImpl implements MatriculaDAO {
     final String INSERT = "INSERT INTO matriculas(alumno, asignatura, fecha, nota) VALUES(?, ?, ?, ?)";
     final String UPDATE = "UPDATE matriculas SET alumno = ?, asignatura = ?, fecha = ?, nota = ?";
     final String DELETE = "DELETE FROM matriculas WHERE alumno = ?";
-    final String GETALL =   "SELECT * FROM matriculas";
+    final String GETALL = "SELECT * FROM matriculas";
+    final String GETONE = "SELECT * FROM maticulas WHERE alumno = ?";
     final String GETALUMNO = "SELECT * FROM matricula WHERE alumno = ?";
     final String GETASIGNATURA = "SELECT * FROM matricula WHERE asignatura = ?";
     final String GETYEAR = "SELECT * FROM matricula WHERE fecha = ?";
@@ -141,21 +142,155 @@ public class MatriculaDAOImpl implements MatriculaDAO {
 
     @Override
     public Matricula obtener(Matricula.IdMatricula id) throws DAOException {
-        return null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Matricula matricula = null;
+
+        try {
+            statement = connection.prepareStatement(GETONE);
+            statement.setLong(1, id.getAlumno());
+            resultSet = statement.executeQuery();
+
+            Long alumno = resultSet.getLong("alumno");
+            Long asignatura = resultSet.getLong("asignatura");
+            Integer fecha = resultSet.getInt("fecha");
+            Integer nota = resultSet.getInt("nota");
+
+            matricula = new Matricula(alumno, asignatura, fecha);
+            matricula.setNota(nota);
+
+            return matricula;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al obtener los datos de la matricula");
+
+        } finally {
+
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException ex) {
+                throw new DAOException("Error al cerrar la consulta");
+            }
+        }
+
     }
 
     @Override
     public List<Matricula> obtenerPorAlumno(long alumno) throws DAOException {
-        return List.of();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Matricula> matriculas = new ArrayList<>();
+
+        try {
+            statement = connection.prepareStatement(GETALUMNO);
+            statement.setLong(1, alumno);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Long id_alumno = resultSet.getLong("alumno");
+                Long asignatura = resultSet.getLong("asignatura");
+                Integer fecha = resultSet.getInt("fecha");
+                Integer nota = resultSet.getInt("nota");
+
+                Matricula matricula = new Matricula(id_alumno, asignatura, fecha);
+                matricula.setNota(nota);
+
+                matriculas.add(matricula);
+            }
+
+            return matriculas;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al obtener los datos de la matricula");
+
+        } finally {
+
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException ex) {
+                throw new DAOException("Error al cerrar la consulta");
+            }
+        }
     }
 
     @Override
     public List<Matricula> obtenerPorAsignatura(long asignatura) throws DAOException {
-        return List.of();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Matricula> matriculas = new ArrayList<>();
+
+        try {
+            statement = connection.prepareStatement(GETASIGNATURA);
+            statement.setLong(1, asignatura);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Long id_alumno = resultSet.getLong("alumno");
+                Long id_asignatura = resultSet.getLong("asignatura");
+                Integer fecha = resultSet.getInt("fecha");
+                Integer nota = resultSet.getInt("nota");
+
+                Matricula matricula = new Matricula(id_alumno, id_asignatura, fecha);
+                matricula.setNota(nota);
+
+                matriculas.add(matricula);
+            }
+
+            return matriculas;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al obtener los datos de la matricula");
+
+        } finally {
+
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException ex) {
+                throw new DAOException("Error al cerrar la consulta");
+            }
+        }
     }
 
     @Override
     public List<Matricula> obtenerPorCurso(int curso) throws DAOException {
-        return List.of();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Matricula> matriculas = new ArrayList<>();
+
+        try {
+            statement = connection.prepareStatement(GETYEAR);
+            statement.setInt(1, curso);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Long id_alumno = resultSet.getLong("alumno");
+                Long asignatura = resultSet.getLong("asignatura");
+                Integer fecha = resultSet.getInt("fecha");
+                Integer nota = resultSet.getInt("nota");
+
+                Matricula matricula = new Matricula(id_alumno, asignatura, fecha);
+                matricula.setNota(nota);
+
+                matriculas.add(matricula);
+            }
+
+            return matriculas;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al obtener los datos de la matricula");
+
+        } finally {
+
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException ex) {
+                throw new DAOException("Error al cerrar la consulta");
+            }
+        }
     }
+
 }
