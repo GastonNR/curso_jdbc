@@ -5,10 +5,10 @@ import model.Alumno;
 import model.ServicioDeDatos;
 import view.ListaAlumnosFrame;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -77,12 +77,38 @@ public class ControladorGeneral implements ActionListener {
     }
 
     private void borrarAlumno() {
+        int filaSeleccionada = listaAlumnosFrame.getTabla_alumos().getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(listaAlumnosFrame, "Debes seleccionar un alumno de la lista para borrarlo");
+            return;
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) listaAlumnosFrame.getTabla_alumos().getModel();
+        Long idAlumno = Long.parseLong(modelo.getValueAt(filaSeleccionada, 0).toString());
+
+        try {
+            Alumno alumno = servicio.getDaoManager().getAlumnoDAO().obtener(idAlumno);
+
+            if (alumno != null) {
+                servicio.getDaoManager().getAlumnoDAO().eliminar(alumno);
+                modelo.removeRow(filaSeleccionada);
+                JOptionPane.showMessageDialog(listaAlumnosFrame, "Alumno eliminado correctamente.");
+
+            }
+        } catch (DAOException ex) {
+            JOptionPane.showMessageDialog(listaAlumnosFrame, "Error al eliminar el alumno.");
+
+        }
+
     }
 
     private void guardarAlumno() {
+
     }
 
     private void cancelar() {
+
     }
 
     private void cargarListaAlumnos() throws DAOException {
