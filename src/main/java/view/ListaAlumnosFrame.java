@@ -1,46 +1,34 @@
 package view;
 
+
 import javax.swing.*;
 
 public class ListaAlumnosFrame extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ListaAlumnosFrame.class.getName());
 
-    private javax.swing.JButton btn_nuevo;
-    private javax.swing.JButton btn_editar;
-    private javax.swing.JButton btn_borrar;
-    private javax.swing.JButton btn_guardar;
-    private javax.swing.JButton btn_cancelar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabla_alumos;
-    private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JTextField txt_apellidos;
-    private javax.swing.JTextField txt_fechaNac;
-    private javax.swing.JTextField txt_nombre;
-
     public ListaAlumnosFrame() {
         initComponents();
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabla_alumos = new javax.swing.JTable();
+        tabla_alumnos = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txt_apellidos = new javax.swing.JTextField();
         txt_nombre = new javax.swing.JTextField();
-        txt_fechaNac = new javax.swing.JTextField();
+        sp_mes = new javax.swing.JSpinner();
+        sp_dia = new javax.swing.JSpinner();
+        sp_anio = new javax.swing.JSpinner();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
         btn_nuevo = new javax.swing.JButton();
         btn_editar = new javax.swing.JButton();
@@ -52,7 +40,7 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        tabla_alumos.setModel(new javax.swing.table.DefaultTableModel(
+        tabla_alumnos.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
                         {null, null, null, null},
                         {null, null, null, null},
@@ -63,13 +51,19 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
                         "Title 1", "Title 2", "Title 3", "Title 4"
                 }
         ));
-        jScrollPane1.setViewportView(tabla_alumos);
+        jScrollPane1.setViewportView(tabla_alumnos);
 
         jLabel1.setText("Apellidos");
 
         jLabel2.setText("Nombre");
 
         jLabel3.setText("Fecha de nacimiento");
+
+        jLabel4.setText("Dia");
+
+        jLabel5.setText("Mes");
+
+        jLabel6.setText("Año");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -78,20 +72,35 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(sp_anio, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addGap(56, 56, 56)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(jLabel1)
                                                         .addComponent(jLabel2))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 34, Short.MAX_VALUE)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(txt_nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(txt_apellidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                .addComponent(jLabel3)
-                                                .addGap(26, 26, 26)
-                                                .addComponent(txt_fechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                        .addComponent(txt_apellidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(sp_mes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(47, 47, 47))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel5)
+                                                .addComponent(jLabel4)
+                                                .addComponent(jLabel6))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(5, 5, 5)
+                                                .addComponent(jLabel3)))
+                                .addGap(49, 49, 49))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addContainerGap(241, Short.MAX_VALUE)
+                                        .addComponent(sp_dia, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(48, 48, 48)))
         );
         jPanel2Layout.setVerticalGroup(
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,11 +113,24 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
+                                .addComponent(jLabel4)
+                                .addGap(13, 13, 13)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(txt_fechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3))
-                                .addContainerGap(129, Short.MAX_VALUE))
+                                        .addComponent(sp_mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(sp_anio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel6))
+                                .addGap(13, 13, 13))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addContainerGap(144, Short.MAX_VALUE)
+                                        .addComponent(sp_dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(89, 89, 89)))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -183,6 +205,28 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
         pack();
     }
 
+    private javax.swing.JButton btn_nuevo;
+    private javax.swing.JButton btn_editar;
+    private javax.swing.JButton btn_borrar;
+    private javax.swing.JButton btn_guardar;
+    private javax.swing.JButton btn_cancelar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabla_alumnos;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JSpinner sp_anio;
+    private javax.swing.JSpinner sp_dia;
+    private javax.swing.JSpinner sp_mes;
+    private javax.swing.JTextField txt_apellidos;
+    private javax.swing.JTextField txt_nombre;
+
     public JButton getBtn_nuevo() {
         return btn_nuevo;
     }
@@ -203,19 +247,28 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
         return btn_cancelar;
     }
 
-    public JTable getTabla_alumos() {
-        return tabla_alumos;
+    public JSpinner getSp_anio() {
+        return sp_anio;
+    }
+
+    public JSpinner getSp_dia() {
+        return sp_dia;
+    }
+
+    public JSpinner getSp_mes() {
+        return sp_mes;
     }
 
     public JTextField getTxt_apellidos() {
         return txt_apellidos;
     }
 
-    public JTextField getTxt_fechaNac() {
-        return txt_fechaNac;
-    }
-
     public JTextField getTxt_nombre() {
         return txt_nombre;
     }
+
+    public JTable getTabla_alumnos() {
+        return tabla_alumnos;
+    }
+
 }
