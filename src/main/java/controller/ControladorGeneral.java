@@ -57,15 +57,26 @@ public class ControladorGeneral implements ActionListener {
         if (e.getSource() == listaAlumnosFrame.getBtn_guardar()) guardarAlumno();
         if (e.getSource() == listaAlumnosFrame.getBtn_cancelar()) cancelar();
     }
+
     private void registrarAlumno() throws DAOException {
         String nombre = listaAlumnosFrame.getTxt_nombre().getText();
         String apellidos = listaAlumnosFrame.getTxt_apellidos().getText();
         LocalDate fechaNac = LocalDate.parse(listaAlumnosFrame.getTxt_fechaNac().getText());
         Alumno nuevoAlumno = new Alumno(nombre, apellidos, fechaNac);
 
-        servicio.getDaoManager().getAlumnoDAO().insertar(nuevoAlumno);
+        try {
+            servicio.getDaoManager().getAlumnoDAO().insertar(nuevoAlumno);
+            JOptionPane.showMessageDialog(listaAlumnosFrame, "Alumno guardado exitosamente");
+            reiniciarCampos();
+            cargarListaAlumnos();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(listaAlumnosFrame, "Error al guardar los datos del alumno.");
+
+        }
 
     }
+
 
     private void actualizarAlumno() throws DAOException{
         String nombre = listaAlumnosFrame.getTxt_nombre().getText();
@@ -97,7 +108,8 @@ public class ControladorGeneral implements ActionListener {
 
             }
         } catch (DAOException ex) {
-            JOptionPane.showMessageDialog(listaAlumnosFrame, "Error al eliminar el alumno.");
+            JOptionPane.showMessageDialog(listaAlumnosFrame, "Error al eliminar el alumno: ");
+            System.out.println(ex);
 
         }
 
@@ -129,6 +141,12 @@ public class ControladorGeneral implements ActionListener {
         }
 
         listaAlumnosFrame.getTabla_alumos().setModel(modelo_tabla);
+    }
+
+    private void reiniciarCampos() {
+        listaAlumnosFrame.getTxt_nombre().setText("");
+        listaAlumnosFrame.getTxt_apellidos().setText("");
+        listaAlumnosFrame.getTxt_fechaNac().setText("");
     }
 
 }
