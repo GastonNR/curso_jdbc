@@ -6,9 +6,12 @@ import model.ServicioDeDatos;
 import view.ListaAlumnosFrame;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,7 +30,10 @@ public class ControladorGeneral implements ActionListener {
         listaAlumnosFrame.getBtn_guardar().addActionListener(this);
         listaAlumnosFrame.getBtn_cancelar().addActionListener(this);
 
+        listaAlumnosFrame.getBtn_editar().setEnabled(false);
+        listaAlumnosFrame.getBtn_borrar().setEnabled(false);
         listaAlumnosFrame.getBtn_guardar().setEnabled(false);
+
         try{
             cargarListaAlumnos();
 
@@ -35,6 +41,18 @@ public class ControladorGeneral implements ActionListener {
             ex.printStackTrace();
 
         }
+        listaAlumnosFrame.getTabla_alumnos().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int filaSeleccionada = listaAlumnosFrame.getTabla_alumnos().getSelectedRow();
+                    if (filaSeleccionada != -1) {
+                        listaAlumnosFrame.getBtn_editar().setEnabled(true);
+                        listaAlumnosFrame.getBtn_borrar().setEnabled(true);
+                    }
+                }
+            }
+        });
     }
 
 
@@ -143,6 +161,16 @@ public class ControladorGeneral implements ActionListener {
         String nombre = listaAlumnosFrame.getTxt_nombre().getText();
         String apellidos = listaAlumnosFrame.getTxt_apellidos().getText();
 
+        try {
+            listaAlumnosFrame.getSp_dia().commitEdit();
+            listaAlumnosFrame.getSp_mes().commitEdit();
+            listaAlumnosFrame.getSp_anio().commitEdit();
+
+        } catch (ParseException ex) {
+            System.out.println("Error al leer los datos del spinner: " + ex);
+
+        }
+
         int dia = (int) listaAlumnosFrame.getSp_dia().getValue();
         int mes = (int) listaAlumnosFrame.getSp_mes().getValue();
         int anio = (int) listaAlumnosFrame.getSp_anio().getValue();
@@ -157,6 +185,10 @@ public class ControladorGeneral implements ActionListener {
         servicio.getDaoManager().getAlumnoDAO().modificar(alumnoActualizado);
         JOptionPane.showMessageDialog(listaAlumnosFrame, "Datos del alumno actualizado exitosamente");
         cargarListaAlumnos();
+        reiniciarCampos();
+        listaAlumnosFrame.getBtn_editar().setEnabled(false);
+        listaAlumnosFrame.getBtn_borrar().setEnabled(false);
+        listaAlumnosFrame.getBtn_guardar().setEnabled(false);
     }
 
     private void cancelar() {
