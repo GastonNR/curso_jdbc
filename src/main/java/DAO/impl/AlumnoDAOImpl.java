@@ -61,15 +61,15 @@ public class AlumnoDAOImpl implements AlumnoDAO {
     }
 
     @Override
-    public void modificar(Alumno a) throws DAOException{
+    public void modificar(Alumno alumno) throws DAOException{
         PreparedStatement statement = null;
 
         try {
             statement = conexion.prepareStatement(UPDATE);
-            statement.setString(1, a.getNombre());
-            statement.setString(2, a.getApellido());
-            statement.setDate(3, java.sql.Date.valueOf(a.getFechaNacimiento()));
-            statement.setLong(4, a.getId());
+            statement.setString(1, alumno.getNombre());
+            statement.setString(2, alumno.getApellido());
+            statement.setDate(3, java.sql.Date.valueOf(alumno.getFechaNacimiento()));
+            statement.setLong(4, alumno.getId());
             if (statement.executeUpdate() == 0) throw new DAOException("Error al actualizar los datos del alumno.");
 
         } catch (SQLException ex) {

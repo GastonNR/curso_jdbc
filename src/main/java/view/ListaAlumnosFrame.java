@@ -23,9 +23,9 @@ public class ListaAlumnosFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txt_apellidos = new javax.swing.JTextField();
         txt_nombre = new javax.swing.JTextField();
-        sp_mes = new javax.swing.JSpinner();
-        sp_dia = new javax.swing.JSpinner();
-        sp_anio = new javax.swing.JSpinner();
+        sp_mes = new javax.swing.JSpinner(new SpinnerNumberModel(1, 1, 12, 1));
+        sp_dia = new javax.swing.JSpinner(new SpinnerNumberModel(1, 1, 31, 1));
+        sp_anio = new javax.swing.JSpinner(new SpinnerNumberModel(2000, 1900, 2100, 1));
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();

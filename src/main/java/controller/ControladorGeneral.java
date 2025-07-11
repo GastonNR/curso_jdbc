@@ -27,6 +27,7 @@ public class ControladorGeneral implements ActionListener {
         listaAlumnosFrame.getBtn_guardar().addActionListener(this);
         listaAlumnosFrame.getBtn_cancelar().addActionListener(this);
 
+        listaAlumnosFrame.getBtn_guardar().setEnabled(false);
         try{
             cargarListaAlumnos();
 
@@ -54,7 +55,13 @@ public class ControladorGeneral implements ActionListener {
             }
         }
         if (e.getSource() == listaAlumnosFrame.getBtn_borrar()) borrarAlumno();
-        if (e.getSource() == listaAlumnosFrame.getBtn_guardar()) guardarAlumno();
+        if (e.getSource() == listaAlumnosFrame.getBtn_guardar()) {
+            try {
+                guardarAlumno();
+            } catch (DAOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
         if (e.getSource() == listaAlumnosFrame.getBtn_cancelar()) cancelar();
     }
 
@@ -84,36 +91,37 @@ public class ControladorGeneral implements ActionListener {
 
 
     private void actualizarAlumno() throws DAOException{
-        String nombre = listaAlumnosFrame.getTxt_nombre().getText();
-        String apellidos = listaAlumnosFrame.getTxt_apellidos().getText();
+        Long id_alumno = getLineaSeleccionada();
+        listaAlumnosFrame.getBtn_guardar().setEnabled(true);
 
-        int dia = (int) listaAlumnosFrame.getSp_dia().getValue();
-        int mes = (int) listaAlumnosFrame.getSp_mes().getValue();
-        int anio = (int) listaAlumnosFrame.getSp_anio().getValue();
+        try {
+            Alumno alumno = servicio.getDaoManager().getAlumnoDAO().obtener(id_alumno);
+            if (alumno != null) {
+                listaAlumnosFrame.getTxt_nombre().setText(alumno.getNombre().toString());
+                listaAlumnosFrame.getTxt_apellidos().setText(alumno.getApellido().toString());
+                listaAlumnosFrame.getSp_dia().setValue(alumno.getFechaNacimiento().getDayOfMonth());
+                listaAlumnosFrame.getSp_mes().setValue(alumno.getFechaNacimiento().getMonthValue());
+                listaAlumnosFrame.getSp_anio().setValue(alumno.getFechaNacimiento().getYear());
 
-        LocalDate fechaNac = LocalDate.of(anio, mes, dia);
-        Alumno alumnoActualizado = new Alumno(nombre, apellidos, fechaNac);
+            }
 
-        servicio.getDaoManager().getAlumnoDAO().modificar(alumnoActualizado);
+        } catch (DAOException ex) {
+            JOptionPane.showMessageDialog(listaAlumnosFrame, "Error al eliminar el alumno: ");
+            System.out.println(ex);
+        }
+
     }
 
     private void borrarAlumno() {
-        int filaSeleccionada = listaAlumnosFrame.getTabla_alumnos().getSelectedRow();
-
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(listaAlumnosFrame, "Debes seleccionar un alumno de la lista para borrarlo");
-            return;
-        }
-
-        DefaultTableModel modelo = (DefaultTableModel) listaAlumnosFrame.getTabla_alumnos().getModel();
-        Long idAlumno = Long.parseLong(modelo.getValueAt(filaSeleccionada, 0).toString());
+        Long idAlumno = getLineaSeleccionada();
 
         try {
             Alumno alumno = servicio.getDaoManager().getAlumnoDAO().obtener(idAlumno);
 
             if (alumno != null) {
                 servicio.getDaoManager().getAlumnoDAO().eliminar(alumno);
-                modelo.removeRow(filaSeleccionada);
+                ((DefaultTableModel) listaAlumnosFrame.getTabla_alumnos().getModel()).removeRow(listaAlumnosFrame.getTabla_alumnos().getSelectedRow());
+
                 JOptionPane.showMessageDialog(listaAlumnosFrame, "Alumno eliminado correctamente.");
 
             }
@@ -125,14 +133,37 @@ public class ControladorGeneral implements ActionListener {
 
     }
 
-    private void guardarAlumno() {
+    private void guardarAlumno() throws DAOException {
 
+        if (listaAlumnosFrame.getTxt_nombre() == null || listaAlumnosFrame.getTxt_apellidos() == null) {
+            JOptionPane.showMessageDialog(listaAlumnosFrame, "Seleccione un alumno");
+            return;
+        }
+
+        String nombre = listaAlumnosFrame.getTxt_nombre().getText();
+        String apellidos = listaAlumnosFrame.getTxt_apellidos().getText();
+
+        int dia = (int) listaAlumnosFrame.getSp_dia().getValue();
+        int mes = (int) listaAlumnosFrame.getSp_mes().getValue();
+        int anio = (int) listaAlumnosFrame.getSp_anio().getValue();
+
+        LocalDate fechaNac = LocalDate.of(anio, mes, dia);
+
+        Long id_alumno_seleccionado = getLineaSeleccionada();
+
+        Alumno alumnoActualizado = new Alumno(nombre, apellidos, fechaNac);
+        alumnoActualizado.setId(id_alumno_seleccionado);
+
+        servicio.getDaoManager().getAlumnoDAO().modificar(alumnoActualizado);
+        JOptionPane.showMessageDialog(listaAlumnosFrame, "Datos del alumno actualizado exitosamente");
+        cargarListaAlumnos();
     }
 
     private void cancelar() {
 
     }
 
+    //Métodos privados
     private void cargarListaAlumnos() throws DAOException {
         String[] columnas ={"ID", "Nombre", "Apellidos", "Fecha de nacimiento"};
         DefaultTableModel modelo_tabla = new DefaultTableModel(columnas, 0);
@@ -157,9 +188,22 @@ public class ControladorGeneral implements ActionListener {
         listaAlumnosFrame.getTxt_nombre().setText("");
         listaAlumnosFrame.getTxt_apellidos().setText("");
 
-        listaAlumnosFrame.getSp_dia().setValue(null);
-        listaAlumnosFrame.getSp_mes().setValue(null);
-        listaAlumnosFrame.getSp_anio().setValue(null);
+        listaAlumnosFrame.getSp_dia().setValue(1);
+        listaAlumnosFrame.getSp_mes().setValue(1);
+        listaAlumnosFrame.getSp_anio().setValue(2000);
     }
 
+    private Long getLineaSeleccionada() {
+        int filaSeleccionada = listaAlumnosFrame.getTabla_alumnos().getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(listaAlumnosFrame, "Debes seleccionar un alumno de la lista.");
+            return null;
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) listaAlumnosFrame.getTabla_alumnos().getModel();
+        Long idAlumno = Long.parseLong(modelo.getValueAt(filaSeleccionada, 0).toString());
+
+        return idAlumno;
+    }
 }
